@@ -19,7 +19,9 @@ class Player():
         self.y = m_game.settings.cell_width / 2
         self.size = m_game.settings.cell_width / 4
         self.colour = (230, 242, 225)
-        
+        self.x_index = 0
+        self.y_index = 0
+
         # player apperance
         self.player_rect = Rect(self.x, self.y, self.size, self.size)
         self.player_rect.center = self.player_rect.topleft
@@ -32,11 +34,12 @@ class Player():
 
     def update(self):
         """Update player position"""
+        self.grid = self.m_game.maze.grid
 
         # find current cell
-        x_index = floor(self.x / self.settings.cell_width)
-        y_index = floor(self.y / self.settings.cell_width)
-        cell = self.m_game.grid[x_index][y_index]
+        self.x_index = floor(self.x / self.settings.cell_width)
+        self.y_index = floor(self.y / self.settings.cell_width)
+        cell = self.grid[self.x_index][self.y_index]
 
         # set boundaries
         top_wall = 0

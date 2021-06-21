@@ -18,35 +18,15 @@ class MazeGame():
         self.screen = pygame.display.set_mode(self.settings.screen_size)
         pygame.display.set_caption("Maze runner")
 
-        # set maze size
-        self.grid = []
         self.rows = floor(
             self.settings.screen_size[0] / self.settings.cell_width)
         self.cols = floor(
             self.settings.screen_size[1] / self.settings.cell_width)
 
-
-        # create list of cells in maze
-        for j in range(self.rows):
-            self.grid.append([])
-            for i in range(self.cols):
-                self.grid[j].append(Cell(j, i, self.settings))
-
-        # set first cell as start
-        self.current = self.grid[floor(self.cols/2)][floor(self.rows/2)]
-        self.current.bg_colour = (20,20,20)
-        self.current.visited = True
-        self.route = []
-
-        generate_maze(self, self.current)
-        while len(self.route) > 0:
-            generate_maze(self, self.current)
-        # set right bottom cell as exit    
-        self.grid[self.cols-1][self.rows-1].bg_colour = (82, 181, 43)
-        self.grid[0][0].bg_colour = (82, 181, 43)
-
         # initialize player
         self.player = Player(self)
+        self.maze = Maze(self)
+
 
     def run_game(self):
         """Run game"""
@@ -94,7 +74,7 @@ class MazeGame():
     def _update_screen(self):
         self.screen.fill(self.settings.bg_color)
 
-        draw_maze(self)
+        self.maze.draw_maze()
         self.player.draw_player()
         # generate_maze(self, self.current)
         pygame.display.flip()

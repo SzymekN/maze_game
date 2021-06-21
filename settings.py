@@ -7,12 +7,12 @@ class Settings():
 
         # general options
         self.screen_size = (500, 500)
-        self.bg_color = (230, 230, 230)
+        self.bg_color = (100,100,100)
         self.FPS = 60
 
         # cell options
         self.cell_width = 50
-        self.draw_distance = 5
+        self.draw_distance = 3
 
         # player speed
         self.player_speed = 5

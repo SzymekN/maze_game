@@ -6,4 +6,4 @@ class Cell():
         self.x = i
         self.y = j
         self.size = settings.cell_width
-        self.bg_colour = (201, 124, 119) 
+        self.bg_colour = [201, 124, 119,255] 
