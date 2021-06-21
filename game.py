@@ -33,9 +33,9 @@ class MazeGame():
                 self.grid[j].append(Cell(j, i, self.settings))
 
         # set first cell as start
-        self.current = self.grid[0][0]
+        self.current = self.grid[floor(self.cols/2)][floor(self.rows/2)]
+        self.current.bg_colour = (20,20,20)
         self.current.visited = True
-        self.current.bg_colour = (82, 181, 43)
         self.route = []
 
         generate_maze(self, self.current)
@@ -43,6 +43,7 @@ class MazeGame():
             generate_maze(self, self.current)
         # set right bottom cell as exit    
         self.grid[self.cols-1][self.rows-1].bg_colour = (82, 181, 43)
+        self.grid[0][0].bg_colour = (82, 181, 43)
 
         # initialize player
         self.player = Player(self)

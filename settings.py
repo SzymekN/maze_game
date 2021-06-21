@@ -1,17 +1,25 @@
+from math import floor
+
+
 class Settings():
     def __init__(self):
         """Game settings"""
 
         # general options
-        self.screen_size = (1000,1000)
+        self.screen_size = (500, 500)
         self.bg_color = (230, 230, 230)
         self.FPS = 60
 
         # cell options
-        self.cell_width = 25
+        self.cell_width = 50
+        self.draw_distance = 5
 
-        # board options
-        self.board_margins = 100
-
-        #player speed 
+        # player speed
         self.player_speed = 5
+
+        self._adjust_screen()
+
+    def _adjust_screen(self):
+        if self.screen_size[0] % self.cell_width != 0 or self.screen_size[1] % self.cell_width != 0:
+            new_size = floor(self.screen_size[0]/self.cell_width)
+            self.screen_size = (new_size * self.cell_width, new_size*self.cell_width)

@@ -64,17 +64,16 @@ class Player():
 
 
         # if player won't pass through any wall move
-        if self.move_u and self.player_rect.top > top_wall:
+        if self.move_u and self.player_rect.top - self.size/2> top_wall:
             self.y -= self.settings.player_speed
 
-        if self.move_r and self.player_rect.right < right_wall:
+        if self.move_r and self.player_rect.right + self.size/2< right_wall:
             self.x += self.settings.player_speed
         
-        if self.move_d and self.player_rect.bottom < bottom_wall:
+        if self.move_d and self.player_rect.bottom + self.size /2 < bottom_wall:
             self.y += self.settings.player_speed
             
-
-        if self.move_l and self.player_rect.left > left_wall:
+        if self.move_l and self.player_rect.left - self.size/2> left_wall:
             self.x -= self.settings.player_speed
 
 
