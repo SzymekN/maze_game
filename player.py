@@ -119,7 +119,7 @@ class Player():
             # draw connection between two nodes
             if len(self.route)>1 and last:
                  py_dr.line(
-                        self.screen, self.colour, (last[0] * self.cell_w+center, last[1] * self.cell_w+center), (x * self.cell_w+center, y * cell_w+center), 2)
+                        self.screen, self.colour, (last[0] * self.cell_w+center, last[1] * self.cell_w+center), (x * self.cell_w+center, y * self.cell_w+center), 2)
 
             # save current segment
             last = segment
