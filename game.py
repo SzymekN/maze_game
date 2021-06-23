@@ -76,6 +76,7 @@ class MazeGame():
 
         self.maze.draw_maze()
         self.player.draw_player()
+        self.player.draw_route()
         # generate_maze(self, self.current)
         pygame.display.flip()
 

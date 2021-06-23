@@ -6,16 +6,18 @@ class Settings():
         """Game settings"""
 
         # general options
-        self.screen_size = (500, 500)
+        self.screen_size = (1000, 1000)
         self.bg_color = (100,100,100)
         self.FPS = 60
 
         # cell options
-        self.cell_width = 50
-        self.draw_distance = 3
+        self.cell_width = 20
+        self.draw_distance = 12
+        self.FOV = False
 
         # player speed
         self.player_speed = 5
+
 
         self._adjust_screen()
 

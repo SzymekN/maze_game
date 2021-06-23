@@ -9,12 +9,19 @@ from cell import Cell
 class Maze():
 
     def __init__(self, m_game):
+        """Initialize Maze"""
+
+        # x,y indexes in grid
         self.x_index = m_game.player.x_index
         self.y_index = m_game.player.y_index
+        # number of columns, rows
         self.rows = m_game.rows
         self.cols = m_game.cols
+        # player fov
         self.fov = m_game.settings.draw_distance 
+        # max distance beetwen first and last cell
         self.max_dist = m_game.rows + m_game.cols
+        # fov paremeter 
         self.divisor = 255 / self.max_dist
 
         self.m_game = m_game
@@ -30,6 +37,7 @@ class Maze():
             self.grid.append([])
             for i in range(self.cols):
                 self.grid[j].append(Cell(j, i, self.settings))
+
         # set first cell as start
         self.current = self.grid[floor(self.cols/2)][floor(self.rows/2)]
         self.current.bg_colour = [60,60,60, 255]
@@ -45,6 +53,12 @@ class Maze():
         self.grid[self.cols-1][self.rows-1].bg_colour = [82, 181, 43, 255]
 
     def draw_maze(self):
+        if self.settings.FOV:
+            self.draw_maze_fov()
+        else:
+            self.draw_maze_no_fov()
+
+    def draw_maze_fov(self):
         """Draw cells, and walls between them"""
         drawn = self.grid[self.x_index][self.y_index] 
         self.y_index = self.player.y_index
@@ -69,42 +83,32 @@ class Maze():
                     wall.set_alpha(alpha)
                     wall.fill((20,20,20))
                     self.screen.blit(wall,((drawn.x * s , drawn.y*s )))
-                    # py_dr.line(
-                        # self.screen, (60,60,60, 255), (drawn.x * s , drawn.y*s ), ((drawn.x + 1)*s, drawn.y*s), 2)
 
                 if drawn.walls[1] == True:
                     wall = pygame.Surface((2,s))
                     wall.set_alpha(alpha)
                     wall.fill((20,20,20))
                     self.screen.blit(wall,((drawn.x + 1) * s-2, drawn.y*s))
-                    # py_dr.line(self.screen, (60,60,60), ((
-                        # drawn.x + 1) * s-2, drawn.y*s), ((drawn.x + 1)*s-2, (drawn.y+1)*s), 2)
 
                 if drawn.walls[2] == True:
                     wall = pygame.Surface((s,2))
                     wall.set_alpha(alpha)
                     wall.fill((20,20,20))
                     self.screen.blit(wall,((drawn.x * s, (drawn.y+1)*s-2)))
-                    # py_dr.line(
-                        # self.screen, (60,60,60), (drawn.x * s, (drawn.y+1)*s-2), ((drawn.x + 1)*s, (drawn.y+1)*s-2), 2)
 
                 if drawn.walls[3] == True:
                     wall = pygame.Surface((2,s))
                     wall.set_alpha(alpha)
                     wall.fill((20,20,20))
                     self.screen.blit(wall,((drawn.x * s, drawn.y*s)))
-                    # py_dr.line(
-                        # self.screen, (60,60,60), (drawn.x * s, drawn.y*s), (drawn.x*s, (drawn.y+1)*s), 2)
 
     def draw_maze_no_fov(self):
         """Draw cells, and walls between them"""
-        drawn = self.grid[self.x_index][self.y_index] 
-        self.y_index = self.player.y_index
-        self.x_index = self.player.x_index
+
         # size
         s = self.settings.cell_width
-        for y in range(len(self.grid[0])):
-            for x in range(len(self.grid)):
+        for y in range(len(self.grid)):
+            for x in range(len(self.grid[0])):
 
                 drawn = self.grid[x][y]
                 # draw cell on surface
@@ -112,25 +116,25 @@ class Maze():
 
                 if drawn.walls[0] == True:
                     py_dr.line(
-                        self.screen, (60,60,60, 255), (drawn.x * s , drawn.y*s ), ((drawn.x + 1)*s, drawn.y*s), 2)
+                        self.screen, (20,20,20), (drawn.x * s , drawn.y*s ), ((drawn.x + 1)*s, drawn.y*s), 2)
 
                 if drawn.walls[1] == True:
-                    py_dr.line(self.screen, (60,60,60), ((
+                    py_dr.line(self.screen, (20,20,20), ((
                         drawn.x + 1) * s-2, drawn.y*s), ((drawn.x + 1)*s-2, (drawn.y+1)*s), 2)
 
                 if drawn.walls[2] == True:
                     py_dr.line(
-                        self.screen, (60,60,60), (drawn.x * s, (drawn.y+1)*s-2), ((drawn.x + 1)*s, (drawn.y+1)*s-2), 2)
+                        self.screen, (20,20,20), (drawn.x * s, (drawn.y+1)*s-2), ((drawn.x + 1)*s, (drawn.y+1)*s-2), 2)
 
                 if drawn.walls[3] == True:
                     py_dr.line(
-                        self.screen, (60,60,60), (drawn.x * s, drawn.y*s), (drawn.x*s, (drawn.y+1)*s), 2)
+                        self.screen, (20,20,20), (drawn.x * s, drawn.y*s), (drawn.x*s, (drawn.y+1)*s), 2)
 
 
     def calculate_alpha(self,x,y):
         # calculate alpha based on distance
         distance = ((abs(self.y_index - y)**2 + abs(self.x_index - x)**2)+0.1)**(1/2)
-        alpha = 255 - distance * self.divisor * 4
+        alpha = 255 - distance * self.divisor * self.fov
         if alpha < 0:
             alpha = 0
         return alpha
