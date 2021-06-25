@@ -33,9 +33,9 @@ class Maze():
         self.grid = []
 
         # create list of cells in maze
-        for j in range(self.rows):
+        for j in range(self.cols):
             self.grid.append([])
-            for i in range(self.cols):
+            for i in range(self.rows):
                 self.grid[j].append(Cell(j, i, self.settings))
 
         # set first cell as start
@@ -107,8 +107,8 @@ class Maze():
 
         # size
         s = self.settings.cell_width
-        for y in range(len(self.grid)):
-            for x in range(len(self.grid[0])):
+        for y in range(len(self.grid[0])):
+            for x in range(len(self.grid)):
 
                 drawn = self.grid[x][y]
                 # draw cell on surface
@@ -134,7 +134,7 @@ class Maze():
     def calculate_alpha(self,x,y):
         # calculate alpha based on distance
         distance = ((abs(self.y_index - y)**2 + abs(self.x_index - x)**2)+0.1)**(1/2)
-        alpha = 255 - distance * self.divisor * self.fov
+        alpha = 255 - distance * self.divisor * self.fov 
         if alpha < 0:
             alpha = 0
         return alpha
@@ -151,9 +151,14 @@ class Maze():
         y = current.y
         top, right, bottom, left = None, None, None, None
 
+        # print(f"cols: {self.rows}")
+        # print(f"x+1: {x+1}")
+
         if y > 0:
             top = self.grid[x][y-1]
         if x < self.cols - 1: 
+            # print(self.cols)
+            # print(x,self.cols - 1)
             right = self.grid[x+1][y]
         if y < self.rows - 1:
             bottom = self.grid[x][y+1]

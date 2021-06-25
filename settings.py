@@ -13,7 +13,16 @@ class Settings():
         # cell options
         self.cell_width = 20
         self.draw_distance = 12
+
+        # game options
+        # create fog
         self.FOV = False
+        # play
+        self.play = False
+        # solve maze
+        self.solve = False
+        # quick solve
+        self.q_solve = False
 
         # player speed
         self.player_speed = 5

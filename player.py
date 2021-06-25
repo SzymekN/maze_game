@@ -1,6 +1,7 @@
 from math import floor
 from pygame import draw as py_dr
 from pygame import Rect
+from pygame.display import set_allow_screensaver
 
 class Player():
     def __init__(self, m_game):
@@ -16,16 +17,9 @@ class Player():
         self.cell_w = self.settings.cell_width
 
         # player options
-        self.x = self.cell_w / 2
-        self.y = self.cell_w / 2
         self.size = self.cell_w / 4
         self.colour = (230, 242, 225)
-        self.x_index = 0
-        self.y_index = 0
 
-        # player apperance
-        self.player_rect = Rect(self.x, self.y, self.size, self.size)
-        self.player_rect.center = self.player_rect.topleft
 
         # movement flags
         self.move_u = False
@@ -33,10 +27,31 @@ class Player():
         self.move_d = False
         self.move_l = False
 
+        self.reset()
+
+
+    def reset(self):
+
+        # position index in grid
+        self.x_index = 0
+        self.y_index = 0
+        self.x = self.cell_w / 2
+        self.y = self.cell_w / 2
+
+        # player apperance
+        self.player_rect = Rect(self.x, self.y, self.size, self.size)
+        self.player_rect.center = self.player_rect.topleft
+
         # Route
         self.last_pos = (0,0)
         self.route = [(self.last_pos)]
+        self.last_pos = (0,0)
+        self.route = [(self.last_pos)]
 
+        # game mode        
+        self.settings.q_solve = False
+        self.settings.play = False
+        self.settings.solve = False
 
     def update(self):
         """Update player position"""
@@ -46,7 +61,8 @@ class Player():
         self.x_index = floor(self.x / self.settings.cell_width)
         self.y_index = floor(self.y / self.settings.cell_width)
         cell = self.grid[self.x_index][self.y_index]
-
+        old_x = self.x
+        old_y = self.y
 
         # set boundaries
         top_wall = 0
@@ -74,17 +90,24 @@ class Player():
 
 
         # if player won't pass through any wall move
-        if self.move_u and self.player_rect.top - self.size/2> top_wall:
+        if self.move_u and self.player_rect.top - self.size> top_wall:
             self.y -= self.settings.player_speed
 
-        if self.move_r and self.player_rect.right + self.size/2< right_wall:
+        if self.move_r and self.player_rect.right + self.size< right_wall:
             self.x += self.settings.player_speed
         
-        if self.move_d and self.player_rect.bottom + self.size /2 < bottom_wall:
+        if self.move_d and self.player_rect.bottom + self.size < bottom_wall:
             self.y += self.settings.player_speed
             
-        if self.move_l and self.player_rect.left - self.size/2> left_wall:
+        if self.move_l and self.player_rect.left - self.size> left_wall:
             self.x -= self.settings.player_speed
+
+        # don't allow diagonal movenent
+        self.dest_x_index = floor(self.x / self.settings.cell_width)
+        self.dest_y_index = floor(self.y / self.settings.cell_width)
+        if abs(self.dest_x_index - self.x_index) == 1 and abs(self.dest_y_index - self.y_index) == 1:
+            self.x = old_x
+            self.y = old_y
 
         self._update_route()
 
