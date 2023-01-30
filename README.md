@@ -7,3 +7,4 @@ Maze game made in PyGame. I used recursive backtracker algorithm to generate maz
 * p - play 
 * s - show A* algorithm 
 * q - solve maze at once
+* f - decrease FOV to make game harder
